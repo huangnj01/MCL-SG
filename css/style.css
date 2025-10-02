@@ -1,0 +1,582 @@
+/* ===== Maersk Brand Palette ===== */
+:root {
+  --maersk-blue: #3592C3;      /* Primary */
+  --deep-blue: #003B5C;        /* Dark brand blue */
+  --energetic-red: #C34037;    /* rgb(195,64,55) */
+  --calm-white: #FFFFFF;
+
+  --accent-green: #2BB673;     /* CTA accent */
+  --text: #1F2A33;             /* Neutral dark text */
+  --muted-border: #D9E6EF;     /* Soft divider */
+  --soft-blue-50: #F2FAFF;     /* Very light blue UI bg */
+  --soft-blue-75: #E9F5FB;     /* Light blue gradient stop */
+  --soft-blue-100: #D9EFFB;    /* Card highlight */
+
+  /* Background image overlay controls */
+  --bg-fade: 0.7;                 /* 0 (no fade) → 1 (fully opaque overlay) */
+  --bg-tint-rgb: 255, 255, 255;   /* white overlay; use 53,146,195 for Maersk-blue tint */
+}
+
+/* ===== Base (with faded background photo) ===== */
+html, body {
+  height: 100%;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+
+  /* Background photo (path is relative to /css/style.css) */
+  background: url("../images/Background01.png") center center / cover no-repeat fixed;
+  background-size: 1000px auto;   /* adjust 200px to control logo size */
+  color: var(--text);
+
+  /* Create stacking context so ::before overlay sits behind content */
+  position: relative;
+  min-height: 100svh;
+}
+
+/* Fade/tint overlay on top of the image */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(var(--bg-tint-rgb), var(--bg-fade));
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Ensure page content appears above overlay */
+header, main, footer, .page, #login-modal, nav, .nav, .nav-left {
+  position: relative;
+  z-index: 1;
+}
+
+/* ===== Header / Nav ===== */
+header {
+  background-color: var(--calm-white);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  padding: 0.8rem 1.2rem;
+  position: sticky;
+  top: 0;
+  z-index: 999; /* stays above overlay and content */
+  border-bottom: 3px solid var(--maersk-blue);
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  height: 40px;
+  width: auto;
+  object-fit: contain;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+.brand {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: var(--deep-blue);
+}
+
+#nav-links a {
+  margin-left: 1rem;
+  color: var(--deep-blue);
+  text-decoration: none;
+  font-weight: 500;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  transition: background 0.2s, color 0.2s;
+}
+
+#nav-links a:hover {
+  background-color: rgba(53, 146, 195, 0.15); /* Maersk Blue @ 15% */
+}
+
+#nav-links a.active {
+  background-color: var(--maersk-blue);
+  color: var(--calm-white);
+  font-weight: 700;
+}
+
+/* ===== Layout ===== */
+main {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: auto;
+  min-height: 60vh;
+}
+
+.page {
+  display: none;
+}
+
+footer {
+  text-align: center;
+  padding: 1rem;
+  background-color: var(--deep-blue);
+  font-size: 0.9rem;
+  color: var(--calm-white);
+}
+
+/* ===== Buttons ===== */
+button {
+  padding: 0.5rem 1rem;
+  background-color: var(--maersk-blue);
+  color: var(--calm-white);
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.2s, transform 0.05s ease-in-out;
+}
+
+button:hover {
+  background-color: var(--deep-blue);
+}
+
+button:active {
+  transform: translateY(1px);
+}
+
+/* Optional CTA style using Fresh Green */
+button.cta {
+  background-color: var(--accent-green);
+}
+button.cta:hover {
+  filter: brightness(0.92);
+}
+
+/* ===== Cards / Lists ===== */
+.product-card, .cart-item, .order-card, .user-entry, .product-entry {
+  border: 1px solid var(--muted-border);
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 1rem 0;
+  background-color: var(--calm-white);
+}
+
+.catalog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+  align-items: stretch;
+}
+
+.product-img {
+  width: 100%;
+  height: 150px;
+  object-fit: contain;
+  margin-bottom: 10px;
+}
+
+.cart-badge {
+  background-color: var(--energetic-red);
+  color: var(--calm-white);
+  font-size: 0.7rem;
+  padding: 2px 6px;
+  border-radius: 10px;
+  margin-left: 4px;
+}
+
+/* ===== Accordion ===== */
+.accordion {
+  margin-top: 3rem;
+  padding-top: 1rem;
+  border-top: 2px dashed var(--muted-border);
+}
+
+.accordion-header {
+  background-color: var(--soft-blue-50);
+  color: var(--deep-blue);
+  cursor: pointer;
+  padding: 1rem;
+  margin: 0.5rem 0;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 1.1rem;
+  transition: background-color 0.3s ease;
+  width: 100%;
+  border-radius: 5px;
+}
+
+.accordion-header:hover {
+  background-color: rgba(53, 146, 195, 0.15);
+}
+
+.accordion-header.active {
+  font-weight: bold;
+  background-color: var(--maersk-blue);
+  color: var(--calm-white);
+}
+
+.accordion-content {
+  padding: 0 1.2rem;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  background-color: #F7FBFE;
+  border-left: 3px solid var(--maersk-blue);
+  border-radius: 0 0 5px 5px;
+}
+
+/* ===== Highlight Cards ===== */
+.card.highlight {
+  background: linear-gradient(135deg, var(--soft-blue-50) 0%, var(--soft-blue-100) 100%);
+}
+
+/* ===== Login Modal ===== */
+#login-modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5);
+  display: none;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-box {
+  background: var(--calm-white);
+  padding: 2rem;
+  border-radius: 8px;
+  width: 300px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login-box h3 {
+  margin-bottom: 1rem;
+  color: var(--deep-blue);
+}
+
+.login-box input {
+  width: 100%;
+  padding: 0.6rem;
+  margin: 0.5rem 0;
+  border: 1px solid #CFE2EE;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.login-box input:focus {
+  outline: 2px solid rgba(53,146,195,0.35);
+  border-color: var(--maersk-blue);
+}
+
+.login-box button {
+  width: 100%;
+  padding: 0.6rem;
+  margin-top: 0.5rem;
+  background: var(--maersk-blue);
+  color: var(--calm-white);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.login-box button:hover {
+  background: var(--deep-blue);
+}
+
+/* ===== Catalog product alignment ===== */
+.product-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  min-height: 360px;
+  box-sizing: border-box;
+}
+
+.product-card h4,
+.product-card p {
+  margin: 0.5rem 0;
+  color: var(--deep-blue);
+}
+
+.product-card button {
+  margin-top: auto;
+  width: 100%;
+}
+
+/* ===== Product image hover swap ===== */
+.product-image-container {
+  position: relative;
+  width: 100%;
+  height: 150px;
+  overflow: hidden;
+}
+
+.product-image-container img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.product-img.hover-img {
+  opacity: 0;         /* Hide the hover image by default */
+  z-index: 2;
+}
+
+.product-image-container:hover .hover-img {
+  opacity: 1;         /* Show the hover image on hover */
+}
+
+.product-image-container:hover .main-img {
+  opacity: 0;         /* Hide the main image on hover */
+}
+
+/* ===== Cancel/Delete Button ===== */
+.delete-order-btn {
+  background-color: var(--energetic-red);
+  color: var(--calm-white);
+  padding: 0.4rem 0.8rem;
+  border: none;
+  border-radius: 5px;
+  margin-top: 10px;
+  cursor: pointer;
+  transition: filter 0.2s ease;
+}
+
+.delete-order-btn:hover {
+  filter: brightness(0.9);
+}
+
+/* ===== Staff Product Alignment ===== */
+.product-row {
+  display: grid;
+  grid-template-columns: 2fr 1.5fr 2fr 2fr 1.5fr;
+  gap: 1rem;
+  align-items: center;
+  background-color: var(--calm-white);
+  border: 1px solid var(--muted-border);
+  padding: 0.8rem;
+  border-radius: 6px;
+  margin-bottom: 0.8rem;
+}
+
+.product-row span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--deep-blue);
+}
+
+.product-price input,
+.product-stock input {
+  width: 80px;
+  padding: 0.3rem;
+  border: 1px solid #CFE2EE;
+  border-radius: 4px;
+}
+
+.product-actions button {
+  margin-left: 5px;
+  padding: 0.4rem 0.6rem;
+}
+
+/* ===== Helpers (optional) ===== */
+/* Switch to Maersk-blue tint overlay:
+:root {
+  --bg-tint-rgb: 53, 146, 195;
+  --bg-fade: 0.35;
+}
+*/
+
+/* === No-wrap for PO/PR tables === */
+.table-wrap { overflow-x: auto; } /* keep horizontal scroll if needed */
+
+#po-lines-table th,
+#po-lines-table td {
+  white-space: nowrap;     /* prevent line breaks */
+  word-break: keep-all;    /* avoid breaking words */
+  overflow-wrap: normal;
+}
+
+#po-lines-table th.sent,
+#po-lines-table td.sent-cell { text-align: center; }
+
+/* If you also use the older PO listing table */
+.po-table th,
+.po-table td {
+  white-space: nowrap;
+  word-break: keep-all;
+  overflow-wrap: normal;
+}
+
+/* Optional: if any specific cell should be allowed to wrap, add class="wrap" */
+.wrap { white-space: normal !important; }
+
+/* Optional: ellipsis helper if you want clipped look for very long text */
+/* Apply class="ellipsis" to a <td> you want truncated */
+.ellipsis {
+  max-width: 280px;        /* adjust to taste */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ===== PO Form Grid (clean alignment) ===== */
+#page-po .card.highlight { padding: 1rem; border-radius: 8px; }
+
+/* 12-column grid on desktop */
+#po-input-form.po-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 12px;
+  align-items: start;
+}
+
+#po-input-form .field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-weight: 600;
+  color: var(--deep-blue);
+}
+
+/* Inputs look consistent and fill their cell */
+#po-input-form input,
+#po-input-form select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #CFE2EE;
+  border-radius: 6px;
+  box-sizing: border-box;
+  font-weight: 500;
+}
+
+#po-input-form input:focus,
+#po-input-form select:focus {
+  outline: 2px solid rgba(53,146,195,0.35);
+  border-color: var(--maersk-blue);
+}
+
+/* Spans */
+#po-input-form .span-3  { grid-column: span 3; }
+#po-input-form .span-4  { grid-column: span 4; }
+#po-input-form .span-6  { grid-column: span 6; }
+#po-input-form .span-12 { grid-column: 1 / -1; }
+
+/* Actions aligned to the right */
+#po-input-form .form-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  align-items: end;
+}
+
+/* Preview sits under the form in two neat columns (desktop) */
+#page-po .po-preview {
+  margin-top: 0.75rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  color: var(--deep-blue);
+}
+
+/* ===== Responsive: stack nicely on small screens ===== */
+@media (max-width: 1024px) {
+  #po-input-form.po-grid { grid-template-columns: repeat(6, 1fr); }
+  #po-input-form .span-6  { grid-column: 1 / -1; }
+}
+
+@media (max-width: 768px) {
+  #po-input-form.po-grid { grid-template-columns: repeat(1, 1fr); }
+  #po-input-form .span-3,
+  #po-input-form .span-4,
+  #po-input-form .span-6,
+  #po-input-form .span-12 { grid-column: 1 / -1; }
+
+  #page-po .po-preview { grid-template-columns: 1fr; }
+}
+
+/* ===== PO table frame + scrollbar ===== */
+:root {
+  --po-row-h: 54px;   /* approximate row height (tweak if yours differs) */
+  --po-head-h: 48px;  /* header height */
+}
+
+/* Frame */
+.table-wrap {
+  border: 1px solid var(--muted-border);
+  border-radius: 10px;
+  background: var(--calm-white);
+  box-shadow: 0 6px 18px rgba(0,0,0,.06);
+  overflow-y: auto;   /* vertical scroll */
+  overflow-x: auto;   /* horizontal scroll if needed (no-wrap table) */
+}
+
+/* Choose how many rows to show by adding one of these classes on the .table-wrap */
+.table-wrap.rows-10 { max-height: calc(var(--po-head-h) + var(--po-row-h) * 10); }
+.table-wrap.rows-12 { max-height: calc(var(--po-head-h) + var(--po-row-h) * 12); }
+.table-wrap.rows-15 { max-height: calc(var(--po-head-h) + var(--po-row-h) * 15); }
+
+/* Keep header pinned while scrolling */
+#po-lines-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--soft-blue-50);
+}
+
+/* Keep single-line cells but trim especially long descriptions */
+#po-lines-table td.col-desc {
+  max-width: 700px;        /* adjust to your layout */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* (From earlier) keep cells on one line & allow horizontal scroll */
+#po-lines-table th,
+#po-lines-table td {
+  white-space: nowrap;
+  word-break: keep-all;
+  overflow-wrap: normal;
+}
+
+/* RFQ form grid */
+#rfq-input-form.rfq-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 12px;
+}
+#rfq-input-form .field { display:flex; flex-direction:column; gap:6px; color: var(--deep-blue); font-weight:600; }
+#rfq-input-form .span-4 { grid-column: span 4; }
+#rfq-input-form .span-6 { grid-column: span 6; }
+#rfq-input-form .span-8 { grid-column: span 8; }
+#rfq-input-form .span-12 { grid-column: 1 / -1; }
+#rfq-input-form input, #rfq-input-form select {
+  width: 100%; padding: 10px 12px; border: 1px solid #CFE2EE; border-radius: 6px; box-sizing: border-box; font-weight: 500;
+}
+#rfq-input-form input:focus, #rfq-input-form select:focus {
+  outline: 2px solid rgba(53,146,195,0.35); border-color: var(--maersk-blue);
+}
+#rfq-input-form fieldset { border:1px dashed var(--muted-border); border-radius:8px; padding: 0.75rem; }
+
+/* Received table: stickiness & no-wrap (you already have table-wrap styles) */
+#rfq-table thead th { position: sticky; top: 0; background: var(--soft-blue-50); z-index: 1; }
+#rfq-table th, #rfq-table td { white-space: nowrap; }
+#rfq-table td.col-desc { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
