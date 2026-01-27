@@ -1,0 +1,185 @@
+/* ----------------------------------------------------
+   RFQ Submit Page Styles — Maersk Branding
+   ---------------------------------------------------- */
+
+/* -------- Brand Palette -------- */
+:root {
+  --maersk-blue: #3592C3;
+  --deep-blue: #003B5C;
+  --energetic-red: #C34037;
+  --calm-white: #FFFFFF;
+  --fresh-green: #69BE28;
+
+  --text-dark: #0a2e40;
+  --text-light: #f8f9fa;
+  --border-color: #d9e3ec;
+  --input-bg: #f6fafc;
+}
+
+/* -------- Base Layout -------- */
+body {
+  font-family: "Segoe UI", "Roboto", sans-serif;
+  background: var(--calm-white);
+  color: var(--text-dark);
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  background-image: linear-gradient(180deg, var(--maersk-blue) 0%, #e7f2f8 100%);
+}
+
+.container {
+  background: var(--calm-white);
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 59, 92, 0.1);
+  margin-top: 60px;
+  padding: 40px 50px;
+  width: 100%;
+  max-width: 700px;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+/* -------- Header -------- */
+h1 {
+  font-size: 1.8rem;
+  color: var(--deep-blue);
+  text-align: center;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+h1 span {
+  color: var(--maersk-blue);
+}
+
+p.subtext {
+  text-align: center;
+  color: #5b7685;
+  font-size: 0.95rem;
+  margin-bottom: 2rem;
+}
+
+/* -------- Form Fields -------- */
+form label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: var(--deep-blue);
+}
+
+form input,
+form select,
+form textarea {
+  width: 100%;
+  padding: 10px 12px;
+  margin-bottom: 20px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background-color: var(--input-bg);
+  font-size: 1rem;
+  color: var(--text-dark);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+form input:focus,
+form select:focus,
+form textarea:focus {
+  border-color: var(--maersk-blue);
+  box-shadow: 0 0 0 3px rgba(53, 146, 195, 0.2);
+  outline: none;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* -------- Buttons -------- */
+button,
+input[type="submit"] {
+  background-color: var(--maersk-blue);
+  color: var(--calm-white);
+  border: none;
+  padding: 12px 22px;
+  border-radius: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+button:hover,
+input[type="submit"]:hover {
+  background-color: var(--deep-blue);
+  transform: translateY(-1px);
+}
+
+button:active,
+input[type="submit"]:active {
+  transform: translateY(0);
+}
+
+/* -------- CTA Variant -------- */
+.btn-green {
+  background-color: var(--fresh-green);
+  color: var(--calm-white);
+}
+
+.btn-green:hover {
+  background-color: #57a522;
+}
+
+/* -------- File Upload -------- */
+input[type="file"] {
+  border: 2px dashed var(--maersk-blue);
+  background: #f0faff;
+  padding: 12px;
+  border-radius: 10px;
+}
+
+input[type="file"]:hover {
+  border-color: var(--deep-blue);
+}
+
+/* -------- Remember Me -------- */
+.remember-me {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 8px;
+}
+
+.remember-me label {
+  margin: 0;
+  color: var(--deep-blue);
+  font-weight: 500;
+}
+
+/* -------- Footer -------- */
+footer {
+  text-align: center;
+  margin-top: 30px;
+  color: #6b7f8d;
+  font-size: 0.85rem;
+}
+
+/* -------- Animation -------- */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* -------- Responsive -------- */
+@media (max-width: 600px) {
+  .container {
+    padding: 30px 25px;
+  }
+}
