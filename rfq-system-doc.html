@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>RFQ System – Technical Overview</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      background: #f7f9fb;
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+    h1, h2, h3 {
+      color: #0b4f6c;
+    }
+    .container {
+      max-width: 1100px;
+      margin: auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 6px;
+    }
+    code, pre {
+      background: #eef2f5;
+      padding: 10px;
+      border-radius: 4px;
+      display: block;
+      overflow-x: auto;
+    }
+    ul {
+      margin-left: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 15px 0;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: left;
+    }
+    th {
+      background: #f0f4f7;
+    }
+    .note {
+      background: #e7f3ff;
+      padding: 10px;
+      border-left: 4px solid #2196f3;
+      margin: 15px 0;
+    }
+  </style>
+</head>
+
+<body>
+<div class="container">
+
+<h1>RFQ Submission System – HTML Documentation</h1>
+<p><strong>System Type:</strong> QR-enabled, Email-based RFQ Submission (No Database)</p>
+
+---
+
+<h2>1. System Overview</h2>
+<p>
+This RFQ system allows users to submit Request for Quotation details via a public HTML web form
+(accessed through a QR code). Once submitted:
+</p>
+<ul>
+  <li>All RFQ details are sent directly to the procurement email</li>
+  <li>Artwork and documents are attached to the email</li>
+  <li>User can review the submitted RFQ</li>
+  <li>User can print or save the RFQ as PDF</li>
+</ul>
+
+<div class="note">
+No database is used. All data is transient and delivered via email.
+</div>
+
+---
+
+<h2>2. Page Structure</h2>
+
+<table>
+  <tr>
+    <th>Page</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td><code>index.html</code></td>
+    <td>Public RFQ submission form (QR access)</td>
+  </tr>
+  <tr>
+    <td><code>review.html</code></td>
+    <td>Submission review & print-to-PDF page</td>
+  </tr>
+</table>
+
+---
+
+<h2>3. RFQ Submission Flow</h2>
+
+<pre>
+User scans QR Code
+        ↓
+index.html (RFQ Form)
+        ↓
+System sends RFQ email
+        ↓
+review.html (Review / Print PDF)
+</pre>
+
+---
+
+<h2>4. Requestor Information (Common Fields)</h2>
+
+<table>
+  <tr><th>Field</th><th>Required</th></tr>
+  <tr><td>Department Name (Short Form)</td><td>Yes</td></tr>
+  <tr><td>Requestor Name</td><td>Yes</td></tr>
+  <tr><td>Request Importance</td><td>No</td></tr>
+  <tr><td>Project / Description</td><td>No</td></tr>
+  <tr><td>RFQ Category</td><td>Yes</td></tr>
+</table>
+
+---
+
+<h2>5. RFQ Categories (Dynamic Forms)</h2>
+
+<h3>A. Carton Boxes</h3>
+<ul>
+  <li>Box Style</li>
+  <li>Cardboard Type (Singleface / SW / DW / TW)</li>
+  <li>Dimensions (L × W × H)</li>
+  <li>Order Quantity *</li>
+  <li>Artwork upload (Max 2 files, 5MB each)</li>
+</ul>
+
+<h3>B. Labels</h3>
+<ul>
+  <li>Label Type</li>
+  <li>Layout (Sheet / Roll)</li>
+  <li>Dimensions</li>
+  <li>Order Quantity</li>
+  <li>Artwork upload (1 file, 10MB)</li>
+</ul>
+
+<h3>C. Tapes</h3>
+<ul>
+  <li>Tape Type</li>
+  <li>Width & Length</li>
+  <li>Order Quantity</li>
+  <li>Optional Artwork</li>
+</ul>
+
+<h3>D. Others</h3>
+<ul>
+  <li>Item Description</li>
+  <li>Model / Part No.</li>
+  <li>Dimensions</li>
+  <li>MOQ Quantity</li>
+  <li>Artwork upload (Up to 2 files)</li>
+</ul>
+
+---
+
+<h2>6. Email Output Structure</h2>
+
+<h3>Email Header</h3>
+<ul>
+  <li>Submission Date & Time</li>
+  <li>Request Importance</li>
+</ul>
+
+<h3>RFQ Details</h3>
+<table>
+  <tr><th>Field</th><th>Value</th></tr>
+  <tr><td>Department</td><td>PR</td></tr>
+  <tr><td>Requestor</td><td>John Tan</td></tr>
+  <tr><td>Category</td><td>Carton Boxes</td></tr>
+</table>
+
+<h3>Artwork</h3>
+<ul>
+  <li>Images shown as fixed-size thumbnails</li>
+  <li>Original files attached to email</li>
+</ul>
+
+---
+
+<h2>7. Review & PDF Printing</h2>
+<ul>
+  <li>User sees the same format as the email</li>
+  <li>Browser print function used to save as PDF</li>
+  <li>No data persistence after submission</li>
+</ul>
+
+---
+
+<h2>8. Design & Technical Notes</h2>
+<ul>
+  <li>Mobile-friendly for QR usage</li>
+  <li>Modular category sections</li>
+  <li>File upload validation enforced</li>
+  <li>Simple, clean UI for fast submissions</li>
+</ul>
+
+---
+
+<p><em>End of Document</em></p>
+
+</div>
+</body>
+</html>

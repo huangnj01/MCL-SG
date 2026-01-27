@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Submit RFQ | Maersk Procurement</title>
+
+  <!-- ===== Styles ===== -->
+  <link rel="stylesheet" href="css/submit.css">
+</head>
+
+<body>
+  <div class="container">
+    <h1>Submit a <span>Request for Quotation</span></h1>
+    <p class="subtext">Please fill in the required details below to create a new RFQ.</p>
+
+    <!-- ===== RFQ FORM ===== -->
+    <form id="rfq-input-form">
+      <label for="dept">Department</label>
+      <input type="text" id="dept" name="dept" placeholder="e.g. Logistics" required>
+
+      <label for="requestor">Requestor Name</label>
+      <input type="text" id="requestor" name="requestor" placeholder="e.g. John Smith" required>
+
+      <label for="importance">Importance Level</label>
+      <select id="importance" name="importance">
+        <option>Normal</option>
+        <option>Urgent</option>
+        <option>Critical</option>
+      </select>
+
+      <label for="project">Project Name</label>
+      <input type="text" id="project" name="project" placeholder="Project XYZ">
+
+      <label for="rfq-category">Category</label>
+      <select id="rfq-category" name="category">
+        <option>Carton Boxes</option>
+        <option>Labels</option>
+        <option>Tapes</option>
+        <option>PE/Courier Bags</option>
+      </select>
+
+      <label for="description">Description</label>
+      <textarea id="description" name="description" placeholder="Enter RFQ details..." required></textarea>
+
+      <label for="file">Attachments (optional)</label>
+      <input type="file" id="file" name="file" multiple>
+
+      <div class="remember-me">
+        <input type="checkbox" id="rfq-remember" name="remember">
+        <label for="rfq-remember">Remember my details for next submission</label>
+      </div>
+
+      <input type="submit" value="Submit RFQ">
+    </form>
+
+    <footer>© 2025 Maersk Procurement</footer>
+  </div>
+
+  <!-- ===== Firebase Setup (Firestore) ===== -->
+  <script type="module">
+    // Import Firebase SDK modules
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+
+    // ✅ Replace with your own Firebase project configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyCGNleb5JocKchwnbCItkJm-6LqonZzUD0",
+      authDomain: "maersk-procurement.firebaseapp.com",
+      projectId: "maersk-procurement",
+      storageBucket: "maersk-procurement.appspot.com",
+      messagingSenderId: "975085464117",
+      appId: "1:975085464117:web:fd32c34b49b51769481f7c",
+      measurementId: "G-MM6FJ8XV8L"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // ===== Handle form submission =====
+    const form = document.getElementById("rfq-input-form");
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      // Collect data
+      const rfqData = {
+        dept: form.dept.value.trim(),
+        requestor: form.requestor.value.trim(),
+        importance: form.importance.value,
+        project: form.project.value.trim(),
+        category: form["rfq-category"].value,
+        description: form.description.value.trim(),
+        createdAt: new Date().toISOString()
+      };
+
+      try {
+        // Add to Firestore
+        await addDoc(collection(db, "rfq_submissions"), rfqData);
+        alert("✅ RFQ submitted successfully!");
+        form.reset();
+      } catch (error) {
+        console.error("Error adding document: ", error);
+        alert("❌ Submission failed. Check console for details.");
+      }
+    });
+  </script>
+</body>
+</html>

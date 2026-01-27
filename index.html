@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>RFQ Submission</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f5f7fa;
+    margin: 0;
+    padding: 20px;
+  }
+  .container {
+    max-width: 1000px;
+    margin: auto;
+    background: #fff;
+    padding: 30px;
+    border-radius: 6px;
+  }
+  h1, h2, h3 {
+    color: #003b5c;
+  }
+  label {
+    display: block;
+    margin-top: 15px;
+    font-weight: bold;
+  }
+  input, select, textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    box-sizing: border-box;
+  }
+  textarea { resize: vertical; }
+  .row {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+  }
+  .row > div {
+    flex: 1;
+    min-width: 220px;
+  }
+  .note {
+    font-size: 13px;
+    background: #eef5ff;
+    padding: 8px;
+    margin-top: 5px;
+  }
+  button {
+    margin-top: 30px;
+    padding: 14px;
+    font-size: 16px;
+    background: #003b5c;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  button:hover {
+    background: #002a40;
+  }
+</style>
+
+<script>
+/* ------------------ COOKIE ------------------ */
+function loadCookies() {
+  document.cookie.split(";").forEach(c => {
+    let [k,v] = c.trim().split("=");
+    if (k === "dept") document.getElementById("department").value = decodeURIComponent(v);
+    if (k === "requestor") document.getElementById("requestor").value = decodeURIComponent(v);
+  });
+}
+
+function rememberUser() {
+  if (document.getElementById("remember").checked) {
+    document.cookie = "dept=" + encodeURIComponent(department.value) + ";max-age=2592000";
+    document.cookie = "requestor=" + encodeURIComponent(requestor.value) + ";max-age=2592000";
+  }
+}
+
+/* ------------------ FILE VALIDATION ------------------ */
+function validateFiles(input, maxFiles, maxSizeMB) {
+  if (input.files.length > maxFiles) {
+    alert(`Maximum ${maxFiles} files allowed`);
+    input.value = "";
+    return;
+  }
+  for (let f of input.files) {
+    if (f.size > maxSizeMB * 1024 * 1024) {
+      alert(`File "${f.name}" exceeds ${maxSizeMB}MB`);
+      input.value = "";
+      return;
+    }
+  }
+}
+
+/* ------------------ DYNAMIC FORMS ------------------ */
+function loadCategoryForm() {
+  const c = document.getElementById("category").value;
+  const d = document.getElementById("dynamicForm");
+  d.innerHTML = "";
+
+  const commonQty = `<label>Order Quantity *</label><input name="details[quantity]" required>`;
+
+  if (c === "carton") {
+    d.innerHTML = `
+      <h3>Carton Boxes</h3>
+      <label>Box Style</label><input name="details[box_style]">
+      <label>Cardboard Type</label>
+      <select name="details[board]">
+        <option>Singleface</option><option>SW</option><option>DW</option><option>TW</option>
+      </select>
+      <label>Dimension Type</label>
+      <select name="details[dimension_type]">
+        <option>Internal</option><option>External</option>
+      </select>
+      <label>Dimensions (L×W×H mm)</label><input name="details[dimensions]">
+      <label>Material Type</label><input name="details[material]">
+      ${commonQty}
+      <label>Weight Capacity</label><input name="details[weight]">
+      <label>Stacking Options</label><input name="details[stacking]">
+      <label>Divider Requirement</label><input name="details[divider]">
+      <label>Artwork Upload</label>
+      <input type="file" name="artwork[]" multiple onchange="validateFiles(this,2,5)">
+      <div class="note">Max 2 files, 5MB each</div>
+    `;
+  }
+
+  if (c === "labels") {
+    d.innerHTML = `
+      <h3>Labels</h3>
+      <label>Label Type</label><input name="details[label_type]">
+      <label>Layout</label>
+      <select name="details[layout]"><option>Sheet</option><option>Roll</option></select>
+      <label>Gap Between Labels (mm)</label><input name="details[gap]">
+      <label>Dimensions (L×W mm)</label><input name="details[dimensions]">
+      <label>Colour</label><input name="details[colour]">
+      <label>Adhesive Type</label><input name="details[adhesive]">
+      <label>Finish Type</label><input name="details[finish]">
+      <label>Durability Requirements</label><input name="details[durability]">
+      ${commonQty}
+      <label>Artwork Upload</label>
+      <input type="file" name="artwork[]" onchange="validateFiles(this,1,10)">
+      <div class="note">Max 1 file, 10MB</div>
+    `;
+  }
+
+  if (c === "tapes") {
+    d.innerHTML = `
+      <h3>Tapes</h3>
+      <label>Tape Type</label><input name="details[type]">
+      <label>Width & Length</label><input name="details[size]">
+      ${commonQty}
+      <label>Optional Artwork</label>
+      <input type="file" name="artwork[]" onchange="validateFiles(this,1,10)">
+    `;
+  }
+
+  if (c === "packing") {
+    d.innerHTML = `
+      <h3>Packing Fills</h3>
+      <label>Fill Type</label><input name="details[type]">
+      ${commonQty}
+      <label>Additional Requirements</label><textarea name="details[remarks]"></textarea>
+    `;
+  }
+
+  if (c === "print") {
+    d.innerHTML = `
+      <h3>Print Consumables</h3>
+      <label>Consumable Type</label><input name="details[type]">
+      <label>Model Details</label><input name="details[model]">
+      ${commonQty}
+    `;
+  }
+
+  if (c === "pebag") {
+    d.innerHTML = `
+      <h3>PE / Courier Bags</h3>
+      <label>Bag Type</label><input name="details[type]">
+      <label>Material</label><input name="details[material]">
+      <label>Dimensions (L×W mm)</label><input name="details[dimensions]">
+      <label>Thickness (micron)</label><input name="details[thickness]">
+      <label>Closure Type</label><input name="details[closure]">
+      ${commonQty}
+      <label>Artwork Upload</label>
+      <input type="file" name="artwork[]" onchange="validateFiles(this,1,10)">
+    `;
+  }
+
+  if (c === "pallet") {
+    d.innerHTML = `
+      <h3>Pallets</h3>
+      <label>Pallet Type</label><input name="details[type]">
+      <label>Treatment Method</label><input name="details[treatment]">
+      <label>Dimensions (L×W×H mm)</label><input name="details[dimensions]">
+      ${commonQty}
+    `;
+  }
+
+  if (c === "stretch") {
+    d.innerHTML = `
+      <h3>Stretch Films</h3>
+      <label>Film Type</label><input name="details[type]">
+      <label>Material</label><input name="details[material]">
+      <label>Dimensions (W cm × L m)</label><input name="details[dimensions]">
+      ${commonQty}
+    `;
+  }
+
+  if (c === "mailers") {
+    d.innerHTML = `
+      <h3>Paper Mailers</h3>
+      <label>Mailer Type</label><input name="details[type]">
+      <label>Dimensions (cm)</label><input name="details[dimensions]">
+      <label>Flap Style</label><input name="details[flap]">
+      <label>Material</label><input name="details[material]">
+      <label>Colour</label>
+      <select name="details[colour]"><option>White</option><option>Brown</option></select>
+      ${commonQty}
+      <label>Artwork Upload</label>
+      <input type="file" name="artwork[]" multiple onchange="validateFiles(this,2,10)">
+    `;
+  }
+
+  if (c === "others") {
+    d.innerHTML = `
+      <h3>Others</h3>
+      <label>Item Description</label><textarea name="details[item]"></textarea>
+      <label>Model / Part No.</label><input name="details[model]">
+      <label>Dimensions (cm)</label><input name="details[dimensions]">
+      ${commonQty}
+      <label>Artwork Upload</label>
+      <input type="file" name="artwork[]" multiple onchange="validateFiles(this,2,10)">
+    `;
+  }
+}
+
+window.onload = loadCookies;
+</script>
+</head>
+
+<body>
+<div class="container">
+<h1>Request for Quotation (RFQ)</h1>
+
+<form action="submit.php" method="post" enctype="multipart/form-data" onsubmit="rememberUser()">
+
+<h2>Requestor Information</h2>
+
+<div class="row">
+  <div>
+    <label>Department *</label>
+    <input id="department" name="department" required placeholder="e.g. PR">
+  </div>
+  <div>
+    <label>Requestor Name *</label>
+    <input id="requestor" name="requestor" required placeholder="e.g. John Tan">
+  </div>
+</div>
+
+<label>Request Importance</label>
+<select name="importance">
+  <option>Urgent</option>
+  <option>Moderate</option>
+  <option>Low</option>
+</select>
+
+<label>Project / Supply & Delivery Description</label>
+<textarea name="project"></textarea>
+
+<label>RFQ Category *</label>
+<select id="category" name="category" onchange="loadCategoryForm()" required>
+  <option value="">Select Category</option>
+  <option value="carton">Carton Boxes</option>
+  <option value="labels">Labels</option>
+  <option value="tapes">Tapes</option>
+  <option value="packing">Packing Fills</option>
+  <option value="print">Print Consumables</option>
+  <option value="pebag">PE / Courier Bags</option>
+  <option value="pallet">Pallets</option>
+  <option value="stretch">Stretch Films</option>
+  <option value="mailers">Paper Mailers</option>
+  <option value="others">Others</option>
+</select>
+
+<div id="dynamicForm"></div>
+
+<label>
+  <input type="checkbox" id="remember"> Remember my details for future submissions
+</label>
+
+<button type="submit">Submit RFQ</button>
+
+</form>
+</div>
+</body>
+</html>
