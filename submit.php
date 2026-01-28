@@ -1,4 +1,6 @@
 <?php
+echo "PHP IS RUNNING";
+exit;
 session_start();
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
