@@ -60,5 +60,5 @@ $headers .= "From: rfq@company.com\r\n";
 mail("neng.huang@lns.maersk.com", "New RFQ Submission", $body, $headers);
 
 // Redirect to combined success + review page
-header("Location: review_success.php");
+header("Location: review.php");
 exit;
